@@ -25,6 +25,9 @@ public class WritingListPanel extends JPanel {
         // 완성된 글 삭제하기 클릭 -> 삭제 상태로 변경
         // 현재보고 잇는패널 리스트패널 -> 삭제된것을 제외하고 보여줘 <----
       }
+     /* if(writing.state().equals("MODIFIED")) {
+
+      }*/
       JButton button = new WritingContentButton(writing);
       this.add(button);
 
