@@ -32,9 +32,9 @@ public class MyDiary {
   private void run() {
 
     JFrame temporaryMainFrame = new MainFrame(account);
-    //setLoginFrame();  - 지우지 말 것
+   // setLoginFrame(); // - 지우지 말 것
 
-    //setButtonsLayout(); - 지우지 말 것
+   // setButtonsLayout();// - 지우지 말 것
 
 
     loginFrame.setVisible(true);
