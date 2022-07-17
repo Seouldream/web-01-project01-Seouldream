@@ -72,6 +72,7 @@ public class DiaryBoardPanel extends JPanel {
               writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
               writingFrame.setLocationRelativeTo(buttonPanel);
 
+              // TODO: kim babo
 
               JPanel framePanel = new JPanel();
               writingFrame.add(framePanel);
