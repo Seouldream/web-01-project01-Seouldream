@@ -4,9 +4,9 @@ public class Writing {
   private String title;
   private String writingContent;
   private String state;
-  private static final String ORIGINAL = "ORIGINAL";
-  private static final String DELETED = "DELETED";
-  private static final String MODIFIED = "MODIFIED";
+  public static final String ORIGINAL = "ORIGINAL";
+  public static final String DELETED = "DELETED";
+  public static final String MODIFIED = "MODIFIED";
 
   public Writing(String title, String writingContent,String state) {
 

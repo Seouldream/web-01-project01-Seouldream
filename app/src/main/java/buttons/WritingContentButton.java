@@ -10,7 +10,13 @@ public class WritingContentButton extends JButton {
 
   public WritingContentButton(Writing writing) {
     this.writing = writing;
-    this.state = writing.state();
+    this.state = Writing.ORIGINAL;
     this.setText(writing.title());
+  }
+
+  public String state() {
+    if (!writing.state().equals(state)) {
+      return state = writing.state();
+    } return null;
   }
 }
