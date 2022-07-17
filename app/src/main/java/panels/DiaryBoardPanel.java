@@ -1,18 +1,16 @@
 package panels;
-
 import buttons.*;
 import models.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.*;
 import java.util.*;
 import java.util.List;
 
 public class DiaryBoardPanel extends JPanel {
   private JPanel writingListPanel;
-  private JButton writingContentButton;
+  private WritingContentButton writingContentButton;
   private JButton saveButton;
   private JFrame writingFrame;
   private JTextField titleTextField;
@@ -61,7 +59,7 @@ public class DiaryBoardPanel extends JPanel {
             String title = titleTextField.getText();
             String writingContent = writingTextArea.getText();
             //라이팅 생성
-            Writing writing = new Writing(title,writingContent,"Original");
+            Writing writing = new Writing(title,writingContent,"ORIGINAL");
             writings.add(writing);
 
             writingContentButton = new WritingContentButton(writing);
@@ -97,8 +95,12 @@ public class DiaryBoardPanel extends JPanel {
               writingFrame.setVisible(true);
 
               deleteButton.addActionListener(event2 -> {
-                 writing.deleted();
-                 refreshDisplay();
+                writing.deleted();
+                writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                writingFrame.setVisible(false);
+                writingListPanel = new WritingListPanel(writings,writingContentButton);
+                //패널 뉴 -> 버튼들 (패널1)-> 지운다 ,상태바꾼다 -> 셋비지블 보여라 (패널1)->
+
               });
             });
           }
