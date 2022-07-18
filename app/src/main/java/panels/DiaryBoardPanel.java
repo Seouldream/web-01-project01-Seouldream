@@ -15,6 +15,8 @@ public class DiaryBoardPanel extends JPanel {
   private JFrame writingFrame;
   private JTextField titleTextField;
   private JTextArea writingTextArea;
+  private String title;
+  private String writingContent;
 
   private List<Writing> writings = new ArrayList<>();
 
@@ -56,8 +58,8 @@ public class DiaryBoardPanel extends JPanel {
 
         saveButton.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            String title = titleTextField.getText();
-            String writingContent = writingTextArea.getText();
+            title = titleTextField.getText();
+            writingContent = writingTextArea.getText();
             //라이팅 생성
             Writing writing = new Writing(title,writingContent,"ORIGINAL");
             writings.add(writing);
@@ -72,6 +74,7 @@ public class DiaryBoardPanel extends JPanel {
               writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
               writingFrame.setLocationRelativeTo(buttonPanel);
 
+              // TODO: kim babo
 
               JPanel framePanel = new JPanel();
               writingFrame.add(framePanel);
@@ -100,6 +103,30 @@ public class DiaryBoardPanel extends JPanel {
                 writingFrame.setVisible(false);
                 writingListPanel = new WritingListPanel(writings,writingContentButton);
                 //패널 뉴 -> 버튼들 (패널1)-> 지운다 ,상태바꾼다 -> 셋비지블 보여라 (패널1)->
+                refresh();
+              });
+              modifyButton.addActionListener(event3 -> {
+                writing.modified();
+                titleTextField.setEditable(true);
+                writingTextArea.setEditable(true);
+                deleteModifyPanel.setLayout(new GridLayout(1,3));
+                JButton modifySaveButton = new JButton("저장하기");
+                deleteModifyPanel.add(modifySaveButton);
+                writingFrame.setVisible(true);
+
+                modifySaveButton.addActionListener(event4-> {
+                  title = titleTextField.getText();
+                  titleTextField.setText(title);
+                  writingContent = writingTextArea.getText();
+                  writingTextArea.setText(writingContent);
+                  titleTextField.setEditable(false);
+                  writingTextArea.setEditable(false);
+                  //라이팅 생성
+
+                  writingListPanel = new WritingListPanel(writings,writingContentButton);
+
+                  refresh();
+                });
 
               });
             });
@@ -108,7 +135,13 @@ public class DiaryBoardPanel extends JPanel {
       }
     });
   }
-
+  private void refresh() {
+    this.add(writingListPanel);
+    writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    writingFrame.setVisible(false);
+    writingListPanel.setVisible((false));
+    writingListPanel.setVisible(true);
+  }
   private void refreshDisplay() {
     writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     writingFrame.setVisible(false);
