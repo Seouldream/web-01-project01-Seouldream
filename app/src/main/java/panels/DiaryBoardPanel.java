@@ -28,22 +28,25 @@ public class DiaryBoardPanel extends JPanel {
   private JFrame writingFrame;
   private JTextField titleTextField;
   private JTextArea writingTextArea;
-  private SerialNumber serialNumber;
   private Writing writing;
-
   private List<Writing> writings = new ArrayList<>();
+  private JPanel panel;
+
+
 
 
 
   public DiaryBoardPanel(Account account) {
-    serialNumber = new SerialNumber();
+
+
     this.setLayout(new BorderLayout());
 
 
     createMenuPanel();
+    System.out.println(writings);
+    panel = new JPanel();
+    this.add(panel, BorderLayout.CENTER);
 
-    writingListPanel = new WritingListPanel(writings, openWritingContentButton);
-    this.add(writingListPanel, BorderLayout.CENTER);
 
     letsGoWriteButtonActionListener();
 
@@ -62,6 +65,8 @@ public class DiaryBoardPanel extends JPanel {
   private void letsGoWriteButtonActionListener() {
     letsGoWriteButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        writingListPanel = new WritingListPanel(writings,openWritingContentButton);
+        panel.add(writingListPanel);
         writingFrame = new JFrame("오늘의 일기");
         writingFrame.setSize(400, 500);
         writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -91,7 +96,7 @@ public class DiaryBoardPanel extends JPanel {
         title = titleTextField.getText();
         writingContent = writingTextArea.getText();
 
-        writing = new Writing(title, writingContent, "ORIGINAL", serialNumber);
+        writing = new Writing(title, writingContent, "ORIGINAL");
         writings.add(writing);
 
         openWritingContentButton = new OpenWritingContentButton(writing);

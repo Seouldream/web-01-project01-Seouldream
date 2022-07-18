@@ -1,19 +1,31 @@
 import models.*;
 import panels.*;
+import utils.*;
 
 import javax.swing.*;
 import java.awt.*;
 
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import java.util.List;
+
 public class MainFrame extends JFrame {
   private Account account;
   private JPanel contentPanel;
+  private List<Writing> writings = new ArrayList<>();
 
-  MainFrame(Account account) {
+  MainFrame(Account account) throws FileNotFoundException {
+
    this.account = account;
+
+    Fileloader fileloader = new Fileloader(writings);
+
+    writings = fileloader.loadWritings();
 
     setMainFrameSetting();
 
-    setMenuPanel();
+    setMenuPanel(writings);
 
     contentPanel = new JPanel();
     this.add(contentPanel,BorderLayout.CENTER);
@@ -27,16 +39,16 @@ public class MainFrame extends JFrame {
     this.setLayout(new BorderLayout());
   }
 
-  private void setMenuPanel() {
+  private void setMenuPanel(List<Writing> writings) {
     JPanel menuPanel = new JPanel();
     this.add(menuPanel,BorderLayout.PAGE_START);
     menuPanel.setLayout(new GridLayout(1,3));
-    menuPanel.add(createDiaryBoardButton());
+    menuPanel.add(createDiaryBoardButton(writings));
     menuPanel.add(createPrivateDiaryBoard());
     menuPanel.add(createMessengerPanel());
   }
 
-  private JButton createDiaryBoardButton() {
+  private JButton createDiaryBoardButton(List<Writing> writings) {
     JButton button = new JButton("너의 일기가 보고싶어!");
     button.addActionListener(event -> {
       JPanel diaryBoardPanel = new DiaryBoardPanel(account);
@@ -67,5 +79,19 @@ public class MainFrame extends JFrame {
     contentPanel.setVisible(false);
     contentPanel.setVisible(true);
     this.setVisible(true);
+  }
+  private void saveDiary() {
+
+    this.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent event) {
+        Fileloader fileloader = new Fileloader(writings);
+        try{
+          fileloader.diaryWriter(writings);
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    });
   }
 }

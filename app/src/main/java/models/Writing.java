@@ -6,17 +6,17 @@ public class Writing {
   private String title;
   private String writingContent;
   private String state;
-  private SerialNumber serialNumber;
+
   public static final String ORIGINAL = "ORIGINAL";
   public static final String DELETED = "DELETED";
   public static final String MODIFIED = "MODIFIED";
 
-  public Writing(String title, String writingContent, String state, SerialNumber serialNumber) {
+  public Writing(String title, String writingContent, String state) {
 
     this.title = title;
     this.writingContent = writingContent;
     this.state = state;
-    this.serialNumber = serialNumber;
+
   }
 
 
@@ -42,6 +42,10 @@ public class Writing {
 
   @Override
   public String toString() {
-    return "(" + title + ": "+ state + ")";
+    return "(" + title + ": "+ writingContent+ ", 상태: "+ state + ")";
+  }
+
+  public String toCsvRow() {
+    return title + "," + writingContent + "," + state;
   }
 }
