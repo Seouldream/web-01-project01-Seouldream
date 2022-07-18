@@ -30,12 +30,11 @@ public class DiaryBoardPanel extends JPanel {
   private JTextArea writingTextArea;
   private SerialNumber serialNumber;
   private Writing writing;
-
-  private List<Writing> writings = new ArrayList<>();
-
+  private List<Writing> writings;
 
 
-  public DiaryBoardPanel(Account account) {
+  public DiaryBoardPanel(Account account,List<Writing> writings) {
+    this.writings = writings;
     serialNumber = new SerialNumber();
     this.setLayout(new BorderLayout());
 
@@ -91,7 +90,7 @@ public class DiaryBoardPanel extends JPanel {
         title = titleTextField.getText();
         writingContent = writingTextArea.getText();
 
-        writing = new Writing(title, writingContent, "ORIGINAL", serialNumber);
+        writing = new Writing(title, writingContent, "ORIGINAL");
         writings.add(writing);
 
         openWritingContentButton = new OpenWritingContentButton(writing);

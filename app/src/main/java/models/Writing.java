@@ -11,12 +11,12 @@ public class Writing {
   public static final String DELETED = "DELETED";
   public static final String MODIFIED = "MODIFIED";
 
-  public Writing(String title, String writingContent, String state, SerialNumber serialNumber) {
+  public Writing(String title, String writingContent, String state) {
 
     this.title = title;
     this.writingContent = writingContent;
     this.state = state;
-    this.serialNumber = serialNumber;
+
   }
 
 
@@ -43,5 +43,9 @@ public class Writing {
   @Override
   public String toString() {
     return "(" + title + ": "+ state + ")";
+  }
+
+  public String toCsvRow() {
+    return title + "," + writingContent + "," + state;
   }
 }

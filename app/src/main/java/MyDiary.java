@@ -2,6 +2,7 @@ import models.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import javax.swing.*;
 
 public class MyDiary {
@@ -24,12 +25,12 @@ public class MyDiary {
   private String ID;
     private String password;
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws FileNotFoundException {
     MyDiary applicaton = new MyDiary();
     applicaton.run();
   }
 
-  private void run() {
+  private void run() throws FileNotFoundException {
 
     JFrame temporaryMainFrame = new MainFrame(account);
    // setLoginFrame(); // - 지우지 말 것
@@ -57,7 +58,11 @@ public class MyDiary {
           JOptionPane.showMessageDialog(null, "로그인 성공",
               "로그인 확인!",JOptionPane.DEFAULT_OPTION);
 
-          JFrame mainFrame = new MainFrame(account);
+          try {
+            JFrame mainFrame = new MainFrame(account);
+          } catch (FileNotFoundException ex) {
+            throw new RuntimeException(ex);
+          }
           loginFrame.setDefaultCloseOperation(loginFrame.DO_NOTHING_ON_CLOSE);
           loginFrame.setVisible(false);
           return;
