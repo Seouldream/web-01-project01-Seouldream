@@ -12,14 +12,16 @@ import java.util.List;
 public class MainFrame extends JFrame {
   private Account account;
   private JPanel contentPanel;
+  private Fileloader fileloader;
   private List<Writing> writings = new ArrayList<>();
 
 
+
   MainFrame(Account account) throws FileNotFoundException {
+    fileloader = new Fileloader();
 
-   Fileloader fileloader = new Fileloader(writings);
+    writings = fileloader.loadWritings(writings);
 
-   writings = fileloader.loadWritings();
    this.account = account;
 
     setMainFrameSetting();
@@ -29,26 +31,12 @@ public class MainFrame extends JFrame {
     contentPanel = new JPanel();
     this.add(contentPanel,BorderLayout.CENTER);
 
-    saveDiary();
 
+    saveDiary();
 
     this.setVisible(true);
    }
 
-  private void saveDiary() {
-
-   this.addWindowListener(new WindowAdapter() {
-     @Override
-     public void windowClosing(WindowEvent event) {
-       Fileloader fileloader = new Fileloader(writings);
-        try{
-          fileloader.diaryWriter(writings);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-     }
-   });
-  }
 
   private void setMainFrameSetting() {
     this.setSize(500,550);
@@ -70,7 +58,12 @@ public class MainFrame extends JFrame {
   private JButton createDiaryBoardButton() {
     JButton button = new JButton("너의 일기가 보고싶어!");
     button.addActionListener(event -> {
-      JPanel diaryBoardPanel = new DiaryBoardPanel(account,writings);
+      JPanel diaryBoardPanel = null;
+      try {
+        diaryBoardPanel = new DiaryBoardPanel(account,writings);
+      } catch (FileNotFoundException e) {
+        throw new RuntimeException(e);
+      }
       showContentPanel(diaryBoardPanel);
     });
     return button;}
@@ -98,5 +91,19 @@ public class MainFrame extends JFrame {
     contentPanel.setVisible(false);
     contentPanel.setVisible(true);
     this.setVisible(true);
+  }
+
+  private void saveDiary() {
+
+    this.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent event) {
+        try{
+          fileloader.diaryWriter(writings);
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    });
   }
 }

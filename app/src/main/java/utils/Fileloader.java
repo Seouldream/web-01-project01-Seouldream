@@ -7,20 +7,20 @@ import java.util.*;
 
 public class Fileloader {
 
-  public Fileloader(List<Writing> writings) {
-  }
 
-  public List<Writing> loadWritings() throws FileNotFoundException {
-    List<Writing> writings = new ArrayList<>();
+  public List<Writing> loadWritings(List<Writing> writings) throws FileNotFoundException {
+
+
     File file = new File("input.csv");
     Scanner scanner = new Scanner(file);
-    
-    String line = scanner.nextLine();
-    
-    Writing writing = parseLine(line);
+    while(scanner.hasNextLine()) {
+      String line = scanner.nextLine();
 
+      Writing writing = parseLine(line);
+      writings.add(writing);
+    }
 
-    return null;
+    return writings;
   }
 
   public void diaryWriter(List<Writing> writings) throws IOException {
@@ -29,7 +29,6 @@ public class Fileloader {
     for(Writing writing : writings) {
       String line = writing.toCsvRow();
       fileWriter.write(line + "\n");
-
        }
     fileWriter.close();
 

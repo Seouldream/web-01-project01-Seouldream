@@ -15,7 +15,7 @@ public class WritingListPanel extends JPanel {
   public WritingListPanel(List<Writing> writings, JButton openWritingContentButton) {
     this.writings = writings;
     this.openWritingContentButton = openWritingContentButton;
-    this.setLayout(new GridLayout(writings.size() + 1, 1));
+    this.setLayout(new GridLayout(0, 1));
     for(Writing writing : writings) {
       if(writing.state().equals("DELETED")) {
         continue;

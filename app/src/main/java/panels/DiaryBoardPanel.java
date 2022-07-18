@@ -2,12 +2,11 @@ package panels;
 
 import buttons.*;
 import models.*;
-import utils.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.io.*;
 import java.util.List;
 
 public class DiaryBoardPanel extends JPanel {
@@ -21,23 +20,21 @@ public class DiaryBoardPanel extends JPanel {
   private JButton modifyButton;
   private JButton modifySaveButton;
 
-
   private JPanel writingListPanel;
   private OpenWritingContentButton openWritingContentButton;
   private JButton saveButton;
   private JFrame writingFrame;
   private JTextField titleTextField;
   private JTextArea writingTextArea;
-  private SerialNumber serialNumber;
+  private JPanel panel;
   private Writing writing;
   private List<Writing> writings;
 
 
-  public DiaryBoardPanel(Account account,List<Writing> writings) {
+  public DiaryBoardPanel(Account account, List<Writing> writings) throws FileNotFoundException {
     this.writings = writings;
-    serialNumber = new SerialNumber();
-    this.setLayout(new BorderLayout());
 
+    this.setLayout(new BorderLayout());
 
     createMenuPanel();
 
@@ -45,8 +42,6 @@ public class DiaryBoardPanel extends JPanel {
     this.add(writingListPanel, BorderLayout.CENTER);
 
     letsGoWriteButtonActionListener();
-
-
 
   }
 
@@ -87,6 +82,7 @@ public class DiaryBoardPanel extends JPanel {
   private void saveButtonActionListener() {
     saveButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+
         title = titleTextField.getText();
         writingContent = writingTextArea.getText();
 
@@ -97,6 +93,8 @@ public class DiaryBoardPanel extends JPanel {
         writingListPanel.add(openWritingContentButton);
         openWritingContentButtonActionListener(writing);
         refreshDisplay();
+
+
 
         System.out.println("리스트 현황: " + writings);
       }
@@ -203,5 +201,6 @@ private void refreshDisplay(){
     writingListPanel.setVisible((false));
     writingListPanel.setVisible(true);
     }
+
 }
 
