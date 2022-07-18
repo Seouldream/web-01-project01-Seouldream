@@ -57,7 +57,7 @@ public class MainFrame extends JFrame {
     this.setLayout(new BorderLayout());
   }
         //Todo 성환님 이랑 로드파일 작업중
- // dsiojfdiosfjdsiofjdsiof
+
   private void setMenuPanel() {
     JPanel menuPanel = new JPanel();
     this.add(menuPanel,BorderLayout.PAGE_START);
