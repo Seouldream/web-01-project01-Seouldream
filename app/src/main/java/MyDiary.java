@@ -40,7 +40,7 @@ public class MyDiary {
     loginFrame.setVisible(true);
 
 
-   // List<Writing> writings = loadWritings();
+    //List<Writing> writings = loadWritings();
 
     loginButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
