@@ -23,7 +23,13 @@ public class WritingListPanel extends JPanel {
       if(writing.state().equals("DELETED")) {
         continue;
       }
-      JButton button = new JButton(writing.title());
+
+     /* if(writing.state().equals("MODIFIED")) {
+
+      }*/
+      JButton button = new WritingContentButton(writing);
+      this.add(button);
+
 
     }
 

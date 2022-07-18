@@ -28,7 +28,10 @@ public class DiaryBoardPanel extends JPanel {
   private JFrame writingFrame;
   private JTextField titleTextField;
   private JTextArea writingTextArea;
+
   private Writing writing;
+  private String title;
+  private String writingContent;
   private List<Writing> writings = new ArrayList<>();
   private JPanel panel;
 
@@ -89,6 +92,7 @@ public class DiaryBoardPanel extends JPanel {
     });
   }
   // 버튼1 (글작성시 글 하나 생성)
+
 
   private void saveButtonActionListener() {
     saveButton.addActionListener(new ActionListener() {
@@ -204,6 +208,7 @@ public void refresh(){
     }
 
 private void refreshDisplay(){
+
     writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     writingFrame.setVisible(false);
     writingListPanel.setVisible((false));
