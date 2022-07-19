@@ -34,12 +34,6 @@ public class Fileloader {
   }
 
   private Journal parseLine(String line) {
-   /* if(line.isBlank()) {
-      String title = "";
-      String content ="";
-      String state = Journal.DELETED;
-      return new Journal(title,content);
-    }*/
     String[] words = line.split(",");
     String title = words[0];
     String content = words[1];
