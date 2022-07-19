@@ -5,18 +5,18 @@ import models.*;
 import javax.swing.*;
 
 public class WritingContentButton extends JButton {
-  private Writing writing;
+  private Journal journal;
   private String state;
 
-  public WritingContentButton(Writing writing) {
-    this.writing = writing;
-    this.state = Writing.ORIGINAL;
-    this.setText(writing.title());
+  public WritingContentButton(Journal journal) {
+    this.journal = journal;
+    this.state = Journal.PUBLISHED;
+    this.setText(journal.title());
   }
 
   public String state() {
-    if (!writing.state().equals(state)) {
-      return state = writing.state();
+    if (!journal.state().equals(state)) {
+      return state = journal.state();
     } return null;
   }
 }

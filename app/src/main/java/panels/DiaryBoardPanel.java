@@ -18,22 +18,19 @@ public class DiaryBoardPanel extends JPanel {
   private String title;
   private String writingContent;
 
-  private List<Writing> writings = new ArrayList<>();
+  private List<Journal> journals = new ArrayList<>();
 
 
-  public DiaryBoardPanel(Account account) {
+  public DiaryBoardPanel(Account account, List<Journal> journals) {
     this.setLayout(new BorderLayout());
-
 
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new BorderLayout());
     this.add(buttonPanel, BorderLayout.PAGE_START);
     JButton button = new JButton("일기 쓰러 가기");
     buttonPanel.add(button);
-
-    writingListPanel = new WritingListPanel(writings,writingContentButton);
+    writingListPanel = new WritingListPanel(this.journals,writingContentButton);
     this.add(writingListPanel, BorderLayout.CENTER);
-
 
     button.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -61,10 +58,10 @@ public class DiaryBoardPanel extends JPanel {
             title = titleTextField.getText();
             writingContent = writingTextArea.getText();
             //라이팅 생성
-            Writing writing = new Writing(title,writingContent,"ORIGINAL");
-            writings.add(writing);
+            Journal journal = new Journal(title,writingContent);
+            DiaryBoardPanel.this.journals.add(journal);
 
-            writingContentButton = new WritingContentButton(writing);
+            writingContentButton = new WritingContentButton(journal);
             writingListPanel.add(writingContentButton);
             refreshDisplay();
 
@@ -98,15 +95,15 @@ public class DiaryBoardPanel extends JPanel {
               writingFrame.setVisible(true);
 
               deleteButton.addActionListener(event2 -> {
-                writing.deleted();
+                journal.delete();
                 writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                 writingFrame.setVisible(false);
-                writingListPanel = new WritingListPanel(writings,writingContentButton);
+                writingListPanel = new WritingListPanel(DiaryBoardPanel.this.journals,writingContentButton);
                 //패널 뉴 -> 버튼들 (패널1)-> 지운다 ,상태바꾼다 -> 셋비지블 보여라 (패널1)->
                 refresh();
               });
               modifyButton.addActionListener(event3 -> {
-                writing.modified();
+                journal.modify();
                 titleTextField.setEditable(true);
                 writingTextArea.setEditable(true);
                 deleteModifyPanel.setLayout(new GridLayout(1,3));
@@ -123,7 +120,7 @@ public class DiaryBoardPanel extends JPanel {
                   writingTextArea.setEditable(false);
                   //라이팅 생성
 
-                  writingListPanel = new WritingListPanel(writings,writingContentButton);
+                  writingListPanel = new WritingListPanel(DiaryBoardPanel.this.journals,writingContentButton);
 
                   refresh();
                 });
