@@ -4,11 +4,11 @@ import models.*;
 
 import javax.swing.*;
 
-public class WritingContentButton extends JButton {
+public class openJournalButton extends JButton {
   private Journal journal;
   private String state;
 
-  public WritingContentButton(Journal journal) {
+  public openJournalButton(Journal journal) {
     this.journal = journal;
     this.state = Journal.PUBLISHED;
     this.setText(journal.title());
