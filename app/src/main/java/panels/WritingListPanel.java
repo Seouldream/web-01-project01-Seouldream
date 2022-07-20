@@ -5,6 +5,7 @@ import models.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 import java.util.List;
 
 public class WritingListPanel extends JPanel {
@@ -15,7 +16,7 @@ public class WritingListPanel extends JPanel {
 
   private List<Journal> journals;
 
-  public WritingListPanel(List<Journal> journals) {
+  public WritingListPanel(List<Journal> journals) throws IOException {
     this.journals = journals;
 
     this.setLayout(new GridLayout(0, 1));
@@ -24,17 +25,24 @@ public class WritingListPanel extends JPanel {
       if (journal.state().equals("DELETED")) {
         continue;
       }
-      JButton button = new openJournalButton(journal,journals,this);
+      JButton button = new OpenJournalButton(journal,journals,this);
 
       this.add(button);
-
-
     }
-
-
   }
 
+  public WritingListPanel(List<Journal> journals,String onlyForMe) throws IOException {
+    this.journals = journals;
 
+    this.setLayout(new GridLayout(0, 1));
+
+    for (Journal journal : journals) {
+      if (journal.state().equals("DELETED")) {
+        continue;
+      }
+      JButton button = new OpenJournalButton(journal,journals,this,"onlyForMe");
+
+      this.add(button);
+    }
+  }
 }
-
-
