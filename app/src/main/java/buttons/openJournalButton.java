@@ -21,12 +21,13 @@ public class OpenJournalButton extends JButton {
   private List<Comment> comments;
 
 
-  public OpenJournalButton(Journal journal, List<Journal> journals
-      , WritingListPanel writingListPanel) throws IOException {
+  public OpenJournalButton(Journal journal, List<Journal> journals) throws IOException {
     this.journal = journal;
     this.journals = journals;
     this.state = Journal.PUBLISHED;
     this.setText(journal.title());
+
+    JPanel diaryBoardPanel = (JPanel)getTopLevelAncestor();
 
     Fileloader fileloader = new Fileloader();
     String commentsFile = "comments.csv";
@@ -34,16 +35,10 @@ public class OpenJournalButton extends JButton {
     comments = fileloader.loadComments(commentsFile);
 
     this.addActionListener(event -> {
-      writingFrame = new JFrame("오늘의 일기");
-      writingFrame.setSize(400, 500);
-      writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-      writingFrame.setLocationRelativeTo(this);
 
-      JButton deleteButton = new DeleteButton(writingFrame,writingListPanel,journal,journals,comments);
+      JButton deleteButton = new DeleteButton(journal,journals);
 
       openWritingWindow(journal,deleteButton,comments);
-
-
 
     });
   }
@@ -66,6 +61,11 @@ public class OpenJournalButton extends JButton {
   }
 
     public void openWritingWindow(Journal journal, JButton button, List<Comment> comments) {
+
+       writingFrame = new JFrame("오늘의 일기");
+       writingFrame.setSize(400, 500);
+       writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+       writingFrame.setLocationRelativeTo(this);
 
       JPanel framePanel = new JPanel();
       titleTextField = new JTextField(10);

@@ -4,6 +4,7 @@ import com.mommoo.flat.frame.*;
 import models.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
@@ -16,13 +17,32 @@ public class DiaryBoardPanel extends JPanel {
   private JTextArea writingTextArea;
   private String title;
   private String writingContent;
+  private JPanel contentContainerPanel = new JPanel();
  // private Account account;
 
   public DiaryBoardPanel(List<Journal> publicJournals) throws IOException {
     this.publicJournals = publicJournals;
-    // this.account = account;
+
+
+    for(Journal journal : publicJournals) {
+      if(journal.state().equals(Journal.DELETED)) {`
+
+    }
+    if(publicJournals.size())
+
+
+
+  }
+
+      showContentPanel(publicJournals);
+
+
 
     this.setLayout(new BorderLayout());
+    this.add(contentContainerPanel,BorderLayout.CENTER);
+
+    showContentPanel(publicJournals);
+
 
     JButton letsGoWriteButton = new JButton("일기 쓰러 가기");
 
@@ -41,7 +61,6 @@ public class DiaryBoardPanel extends JPanel {
 
         Journal publicJournal = new Journal(title, writingContent);
 
-
         publicJournals.add(publicJournal);
         writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         writingFrame.setVisible(false);
@@ -58,10 +77,13 @@ public class DiaryBoardPanel extends JPanel {
     });
   }
 
+
   private void showContentPanel(List<Journal> publicJournals) throws IOException {
     if (contentPanel != null) {
       contentPanel.removeAll();
     }
+    contentPanel = new JPanel();
+    contentContainerPanel.add(contentPanel);
     contentPanel = new WritingListPanel(publicJournals);
 
     this.add(contentPanel);

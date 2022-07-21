@@ -1,6 +1,5 @@
 package buttons;
 
-import com.mommoo.flat.component.*;
 import models.*;
 import panels.*;
 
@@ -9,41 +8,36 @@ import java.io.*;
 import java.util.List;
 
 public class DeleteButton extends JButton {
+  public static final String INACTIVE = "INACTIVE";
+  public static final String ACTIVE = "ACTIVE";
+  private String state;
   private JFrame writingFrame;
-  private JPanel writingListPanel;
-  private JTextField titleTextField;
-  private JTextArea writingTextArea;
-  private JPanel contentPanel;
+  private List<Journal> journals;
 
-  public DeleteButton(JFrame writingFrame, JPanel writingListPanel, Journal journal, List<Journal> journals, List<Comment> comments) {
-    this.writingFrame = writingFrame;
-    this.writingListPanel = writingListPanel;
+  public DeleteButton(Journal journal, List<Journal> journals) {
+    this.journals = journals;
     this.setText("삭제하기");
+    this.state = DeleteButton.INACTIVE;
 
     this.addActionListener(deleteButtonEvent -> {
       journal.delete();
+      activate();
 
-      this.writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-      this.writingFrame.setVisible(false);
-
-      try {
-        showContentPanel(journals);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
+      writingFrame = (JFrame)getTopLevelAncestor();
+      writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+      writingFrame.setVisible(false);
     });
   }
-  private void showContentPanel(List<Journal> privateJournals) throws IOException {
-    if (contentPanel != null) {
-      contentPanel.removeAll();
-    }
-    contentPanel = new WritingListPanel(privateJournals);
 
-    writingFrame.add(contentPanel);
-
-    contentPanel.setVisible((false));
-    contentPanel.setVisible(true);
+  public void activate() {
+    state = DeleteButton.ACTIVE;
   }
+
+  public void inactivate() {
+    state = DeleteButton.INACTIVE;
+  }
+
+
 
 }
 
