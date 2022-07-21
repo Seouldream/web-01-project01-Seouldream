@@ -11,23 +11,21 @@ import java.util.List;
 public class MainFrame extends JFrame {
   private Account account;
   private JPanel contentPanel;
-  private Fileloader fileloader;
+  private FileLoader fileloader;
   private List<Journal> publicJournals;
   private List<Journal> privateJournals;
   private List<Comment> publicComments;
   private List<Comment> privateComments;
 
   MainFrame(Account account) throws FileNotFoundException {
-    fileloader = new Fileloader();
-    String publicJournalFile = "input.csv";
-    String myJournalFile = "private.csv";
+    fileloader = new FileLoader();
+    String publicJournalFile = "publicJournals.csv";
+    String myJournalFile = "privateJournals.csv";
     publicJournals = fileloader.loadWritings(publicJournalFile);
     privateJournals = fileloader.loadWritings(myJournalFile);
 
-
     String publicCommentsFile = "publicComments.csv";
     String privateCommentsFile = "privateComments.csv";
-
     publicComments = fileloader.loadComments(publicCommentsFile);
     privateComments = fileloader.loadComments(privateCommentsFile);
 
@@ -54,12 +52,11 @@ public class MainFrame extends JFrame {
       }
     });
 
-
-    saveDiary(publicJournals, "input.csv");
-    saveDiary(privateJournals, "private.csv");
-
+    saveDiary(publicJournals, "publicJournals.csv");
+    saveDiary(privateJournals, "privateJournals.csv");
     saveComments(publicComments, "publicComments.csv");
     saveComments(privateComments, "privateComments.csv");
+    saveAccounts(MyDiaryLoginMain.accountsList, "accountsList.csv");
 
     this.setVisible(true);
   }
@@ -147,7 +144,6 @@ public class MainFrame extends JFrame {
     }
   }
 
-
   public void showContentPanel() {
     this.add(contentPanel, BorderLayout.CENTER);
     contentPanel.setVisible(false);
@@ -156,7 +152,6 @@ public class MainFrame extends JFrame {
   }
 
   private void saveDiary(List<Journal> journals, String newFileName) {
-
     this.addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent event) {
@@ -170,12 +165,24 @@ public class MainFrame extends JFrame {
   }
 
   private void saveComments(List<Comment> comments, String newFileName) {
-
     this.addWindowListener(new WindowAdapter() {
       @Override
       public void windowActivated(WindowEvent event) {
         try {
           fileloader.commentsWriter(comments, newFileName);
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    });
+  }
+
+  private void saveAccounts(List<Account> accountsList, String newFileName) {
+    this.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowActivated(WindowEvent event) {
+        try {
+          fileloader.accountsWriter(accountsList, newFileName);
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
