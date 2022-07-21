@@ -20,7 +20,7 @@ public class PrivateDiaryBoardPanel extends JPanel {
     this.setLayout(new BorderLayout());
     this.add(contentPanel,BorderLayout.CENTER);
 
-    showContentPanel(privateJournals);
+   // showContentPanel(privateJournals);
 
     FlatButton letsGoWriteButton = new FlatButton("일기 쓰러 가기");
 
@@ -30,7 +30,7 @@ public class PrivateDiaryBoardPanel extends JPanel {
 
     letsGoWriteButton.addActionListener(letsGoWriteButtonEvent -> {
 
-      openWritingWindow();
+    openWritingWindow();
 
     });
   }
@@ -40,7 +40,7 @@ public class PrivateDiaryBoardPanel extends JPanel {
       contentPanel.removeAll();
     }
 
-    contentPanel = new WritingListPanel(privateJournals);
+    contentPanel = new WritingListPanel(privateJournals,"onlyForMe");
 
     this.add(contentPanel);
 
@@ -57,7 +57,6 @@ public class PrivateDiaryBoardPanel extends JPanel {
     JPanel framePanel = new JPanel();
     titleTextField = new JTextField(10);
     writingTextArea = new JTextArea(30, 10);
-
 
     framePanel.setLayout(new BorderLayout());
 

@@ -26,7 +26,7 @@ public class DiaryBoardPanel extends JPanel {
     this.setLayout(new BorderLayout());
     this.add(contentPanel,BorderLayout.CENTER);
 
-    showContentPanel(publicJournals);
+    //showContentPanel(publicJournals);
 
     FlatButton letsGoWriteButton = new FlatButton("일기 쓰러 가기");
 
@@ -36,7 +36,7 @@ public class DiaryBoardPanel extends JPanel {
 
     letsGoWriteButton.addActionListener(letsGoWriteButtonEvent -> {
 
-      openWritingWindow();
+     openWritingWindow();
 
     });
   }
@@ -71,7 +71,6 @@ public class DiaryBoardPanel extends JPanel {
 
     SaveButton saveButton = new SaveButton(writingFrame,titleTextField,writingTextArea,publicJournals);
     framePanel.add(saveButton, BorderLayout.PAGE_END);
-    saveButton.setVisible(true);
     writingFrame.add(framePanel);
     writingFrame.setVisible(true);
   }

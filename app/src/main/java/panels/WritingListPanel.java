@@ -40,7 +40,7 @@ public class WritingListPanel extends JPanel {
       if (journal.state().equals("DELETED")) {
         continue;
       }
-      JButton button = new OpenJournalButton(journal,journals,"onlyForMe");
+      JButton button = new OpenJournalButton(journal,"onlyForMe");
 
       this.add(button);
     }

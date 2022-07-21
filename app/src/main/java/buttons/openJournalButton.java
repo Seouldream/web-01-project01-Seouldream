@@ -17,6 +17,8 @@ public class OpenJournalButton extends FlatButton {
   private List<Journal> journals;
   private String state;
   private JFrame writingFrame;
+  private JPanel framePanel;
+  private JPanel contentPanel;
   private JTextField titleTextField;
   private JTextArea writingTextArea;
   private List<Comment> comments;
@@ -38,15 +40,18 @@ public class OpenJournalButton extends FlatButton {
 
     this.addActionListener(event -> {
 
-      FlatButton deleteButton = new DeleteButton(journal,journals);
+      openWritingFrame(journal);
 
-      openWritingWindow(journal,deleteButton,comments);
+      FlatButton deleteButton = new DeleteButton(journal);
+
+      framePanel.add(deleteButton, BorderLayout.PAGE_END);
+      writingFrame.add(framePanel);
+      writingFrame.setVisible(true);
 
     });
   }
 
-  public OpenJournalButton(Journal journal, List<Journal> journals
-      , String onlyForMe) throws IOException {
+  public OpenJournalButton(Journal journal,String onlyForMe) throws IOException {
     this.journal = journal;
     this.state = Journal.PUBLISHED;
     this.setText(journal.title());
@@ -58,58 +63,45 @@ public class OpenJournalButton extends FlatButton {
     comments = fileloader.loadComments(commentsFile);
 
     this.addActionListener(event -> {
-      FlatButton modifyButton = new ModifyButton(journal, journals, comments);
+      openWritingFrame(journal);
+    //  FlatButton deleteButton = new DeleteButton(journal,journals);
 
-    });
-  }
-
-    public void openWritingWindow(Journal journal, FlatButton button, List<Comment> comments) {
-
-       writingFrame = new JFrame("오늘의 일기");
-       writingFrame.setSize(400, 500);
-       writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-       writingFrame.setLocationRelativeTo(this);
-
-      JPanel framePanel = new JPanel();
-      titleTextField = new JTextField(10);
-      JPanel contentPanel = new JPanel();
-      writingTextArea = new JTextArea(30, 10);
+      FlatButton modifyButton = new ModifyButton(writingFrame,
+          titleTextField,writingTextArea,journal, comments);
 
       FlatButton goLeaveACommentButton = new GoLeaveACommentButton(journal, comments);
 
-      framePanel.setLayout(new BorderLayout());
-      contentPanel.setLayout(new BorderLayout());
-
-      framePanel.add(titleTextField, BorderLayout.PAGE_START);
-      framePanel.add(contentPanel, BorderLayout.CENTER);
-      contentPanel.add(writingTextArea, BorderLayout.CENTER);
       contentPanel.add(goLeaveACommentButton, BorderLayout.PAGE_END);
-      framePanel.add(button, BorderLayout.PAGE_END);
-
-      titleTextField.setText(journal.title());
-      writingTextArea.setText(journal.content());
-      titleTextField.setEditable(false);
-      writingTextArea.setEditable((false));
+      framePanel.add(modifyButton, BorderLayout.PAGE_END);
 
       writingFrame.add(framePanel);
       writingFrame.setVisible(true);
-    }
+    });
+  }
 
+  private void openWritingFrame(Journal journal) {
+    writingFrame = new JFrame("오늘의 일기");
+    writingFrame.setSize(400, 500);
+    writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    writingFrame.setLocationRelativeTo(this);
 
+    titleTextField = new JTextField(10);
+    writingTextArea = new JTextArea(30, 10);
+    framePanel = new JPanel();
+    contentPanel = new JPanel();
 
+    framePanel.setLayout(new BorderLayout());
+    contentPanel.setLayout(new BorderLayout());
 
-/*  private void showContentPanel(List<Journal> privateJournals) throws IOException {
-    if (contentPanel != null) {
-      contentPanel.removeAll();
-    }
-    contentPanel = new WritingListPanel(privateJournals, "onlyForME");
+    framePanel.add(titleTextField, BorderLayout.PAGE_START);
+    framePanel.add(contentPanel, BorderLayout.CENTER);
+    contentPanel.add(writingTextArea, BorderLayout.CENTER);
 
-    this.add(contentPanel);
-
-    contentPanel.setVisible((false));
-    contentPanel.setVisible(true);
-  }*/
-
+    titleTextField.setText(journal.title());
+    writingTextArea.setText(journal.content());
+    titleTextField.setEditable(false);
+    writingTextArea.setEditable((false));
+  }
 
   public String state() {
     if (!journal.state().equals(state)) {

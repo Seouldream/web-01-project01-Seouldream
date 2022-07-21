@@ -96,7 +96,6 @@ public class MainFrame extends JFrame {
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
-
       showContentPanel();
     });
     return button;
@@ -124,7 +123,7 @@ public class MainFrame extends JFrame {
     }
 
   private void refreshPrivateDiaryBoardPanel() throws IOException {
-    for (Journal journal : publicJournals) {
+    for (Journal journal : privateJournals) {
       if (journal.switchState().equals(Journal.ON)) {
         if (contentPanel != null) {
           contentPanel.removeAll();
