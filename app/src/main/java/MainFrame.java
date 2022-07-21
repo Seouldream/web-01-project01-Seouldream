@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.*;
 import java.util.List;
 
 public class MainFrame extends JFrame {
@@ -15,6 +14,8 @@ public class MainFrame extends JFrame {
   private Fileloader fileloader;
   private List<Journal> publicJournals;
   private List<Journal> privateJournals;
+  private List<Comment> publicComments;
+  private List<Comment> privateComments;
 
   MainFrame(Account account) throws FileNotFoundException {
     fileloader = new Fileloader();
@@ -22,6 +23,14 @@ public class MainFrame extends JFrame {
     String myJournalFile = "private.csv";
     publicJournals = fileloader.loadWritings(publicJournalFile);
     privateJournals = fileloader.loadWritings(myJournalFile);
+
+
+    String publicCommentsFile = "publicComments.csv";
+    String privateCommentsFile = "privateComments.csv";
+
+    publicComments = fileloader.loadComments(publicCommentsFile);
+    privateComments = fileloader.loadComments(privateCommentsFile);
+
     this.account = account;
 
     setMainFrameSetting();
@@ -48,6 +57,9 @@ public class MainFrame extends JFrame {
 
     saveDiary(publicJournals, "input.csv");
     saveDiary(privateJournals, "private.csv");
+
+    saveComments(publicComments, "publicComments.csv");
+    saveComments(privateComments, "privateComments.csv");
 
     this.setVisible(true);
   }
@@ -76,7 +88,7 @@ public class MainFrame extends JFrame {
         contentPanel.removeAll();
       }
       try {
-        contentPanel = new DiaryBoardPanel(publicJournals);
+        contentPanel = new DiaryBoardPanel(publicJournals,publicComments);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -92,7 +104,7 @@ public class MainFrame extends JFrame {
         contentPanel.removeAll();
       }
       try {
-        contentPanel = new PrivateDiaryBoardPanel(privateJournals);
+        contentPanel = new PrivateDiaryBoardPanel(privateJournals,privateComments);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -114,7 +126,7 @@ public class MainFrame extends JFrame {
       if (journal.switchState().equals(Journal.ON)) {
           if (contentPanel != null) {
             contentPanel.removeAll();
-            contentPanel = new DiaryBoardPanel(publicJournals);
+            contentPanel = new DiaryBoardPanel(publicJournals, publicComments);
           showContentPanel();
           journal.switchOff();
         }
@@ -127,7 +139,7 @@ public class MainFrame extends JFrame {
       if (journal.switchState().equals(Journal.ON)) {
         if (contentPanel != null) {
           contentPanel.removeAll();
-          contentPanel = new PrivateDiaryBoardPanel(privateJournals);
+          contentPanel = new PrivateDiaryBoardPanel(privateJournals, privateComments);
           showContentPanel();
           journal.switchOff();
         }
@@ -150,6 +162,20 @@ public class MainFrame extends JFrame {
       public void windowClosing(WindowEvent event) {
         try {
           fileloader.diaryWriter(journals, newFileName);
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    });
+  }
+
+  private void saveComments(List<Comment> comments, String newFileName) {
+
+    this.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowActivated(WindowEvent event) {
+        try {
+          fileloader.commentsWriter(comments, newFileName);
         } catch (IOException e) {
           throw new RuntimeException(e);
         }

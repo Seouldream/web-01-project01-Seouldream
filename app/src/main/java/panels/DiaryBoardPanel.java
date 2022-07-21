@@ -1,17 +1,15 @@
 package panels;
 import buttons.*;
 import com.mommoo.flat.button.*;
-import com.mommoo.flat.frame.*;
 import models.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
-import java.util.*;
 import java.util.List;
 
 public class DiaryBoardPanel extends JPanel {
   private List<Journal> publicJournals;
+  private List<Comment> publicComments;
   private JPanel contentPanel = new JPanel();
   private JFrame writingFrame;
   private JTextField titleTextField;
@@ -20,8 +18,9 @@ public class DiaryBoardPanel extends JPanel {
   private String writingContent;
  // private Account account;
 
-  public DiaryBoardPanel(List<Journal> publicJournals) throws IOException {
+  public DiaryBoardPanel(List<Journal> publicJournals, List<Comment> publicComments) throws IOException {
     this.publicJournals = publicJournals;
+    this.publicComments = publicComments;
 
     this.setLayout(new BorderLayout());
     this.add(contentPanel,BorderLayout.CENTER);
@@ -32,7 +31,7 @@ public class DiaryBoardPanel extends JPanel {
 
     this.add(letsGoWriteButton, BorderLayout.PAGE_START);
 
-    showContentPanel(publicJournals);
+    showContentPanel(publicJournals,publicComments);
 
     letsGoWriteButton.addActionListener(letsGoWriteButtonEvent -> {
 
@@ -41,12 +40,12 @@ public class DiaryBoardPanel extends JPanel {
     });
   }
 
-  private void showContentPanel(List<Journal> publicJournals) throws IOException {
+  private void showContentPanel(List<Journal> publicJournals, List<Comment> publicComments) throws IOException {
     if (contentPanel != null) {
       contentPanel.removeAll();
     }
 
-    contentPanel = new WritingListPanel(publicJournals);
+    contentPanel = new WritingListPanel(publicJournals,publicComments);
 
     this.add(contentPanel);
 

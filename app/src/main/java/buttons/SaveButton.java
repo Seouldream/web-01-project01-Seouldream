@@ -14,6 +14,8 @@ public class SaveButton extends FlatButton {
   private JTextField titleTextField;
   private JTextArea writingTextArea;
   private JPanel contentPanel;
+  private List<Comment> publicComments;
+
 
   public SaveButton(JFrame writingFrame,JTextField titleTextField,JTextArea writingTextArea,List<Journal> journals) {
     this.writingFrame = writingFrame;
@@ -75,26 +77,6 @@ public class SaveButton extends FlatButton {
 
     writingFrame.add(framePanel);
     writingFrame.setVisible(true);
-  }
-
-  private void showContentPanelForPublic(List<Journal> publicJournals) throws IOException {
-    if (contentPanel != null) {
-      contentPanel.removeAll();
-    }
-    contentPanel = new WritingListPanel(publicJournals);
-
-    contentPanel.setVisible((false));
-    contentPanel.setVisible(true);
-  }
-
-  private void showContentPanel(List<Journal> privateJournals) throws IOException {
-    if (contentPanel != null) {
-      contentPanel.removeAll();
-    }
-    contentPanel = new WritingListPanel(privateJournals, "onlyForME");
-
-    contentPanel.setVisible((false));
-    contentPanel.setVisible(true);
   }
 
 }

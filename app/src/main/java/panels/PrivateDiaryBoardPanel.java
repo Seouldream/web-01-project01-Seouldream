@@ -13,9 +13,11 @@ public class PrivateDiaryBoardPanel extends JPanel {
   private JTextField titleTextField;
   private JTextArea writingTextArea;
   private List<Journal> privateJournals;
+  private List<Comment> privateComments;
 
-  public PrivateDiaryBoardPanel(List<Journal> privateJournals) throws IOException {
+  public PrivateDiaryBoardPanel(List<Journal> privateJournals, List<Comment> privateComments) throws IOException {
     this.privateJournals = privateJournals;
+    this.privateComments = privateComments;
 
     this.setLayout(new BorderLayout());
     this.add(contentPanel,BorderLayout.CENTER);
@@ -26,7 +28,7 @@ public class PrivateDiaryBoardPanel extends JPanel {
 
     this.add(letsGoWriteButton, BorderLayout.PAGE_START);
 
-    showContentPanel(privateJournals);
+    showContentPanel(privateJournals,privateComments);
 
     letsGoWriteButton.addActionListener(letsGoWriteButtonEvent -> {
 
@@ -35,12 +37,12 @@ public class PrivateDiaryBoardPanel extends JPanel {
     });
   }
 
-  private void showContentPanel(List<Journal> privateJournals) throws IOException {
+  private void showContentPanel(List<Journal> privateJournals, List<Comment> privateComments) throws IOException {
     if (contentPanel != null) {
       contentPanel.removeAll();
     }
 
-    contentPanel = new WritingListPanel(privateJournals,"onlyForMe");
+    contentPanel = new WritingListPanel(privateJournals,privateComments,"onlyForMe");
 
     this.add(contentPanel);
 

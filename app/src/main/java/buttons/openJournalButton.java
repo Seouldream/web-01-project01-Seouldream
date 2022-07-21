@@ -2,8 +2,6 @@ package buttons;
 
 import com.mommoo.flat.button.*;
 import models.*;
-import panels.*;
-import utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,22 +19,23 @@ public class OpenJournalButton extends FlatButton {
   private JPanel contentPanel;
   private JTextField titleTextField;
   private JTextArea writingTextArea;
-  private List<Comment> comments;
+  private List<Comment> publicComments;
+  private List<Comment> privateComments;
 
 
-  public OpenJournalButton(Journal journal, List<Journal> journals) throws IOException {
+
+  public OpenJournalButton(Journal journal, List<Journal> journals, List<Comment> publicComments) throws IOException {
     this.journal = journal;
     this.journals = journals;
+    this.publicComments = publicComments;
     this.state = Journal.PUBLISHED;
     this.setText(journal.title());
     this.setBackground(Color.getHSBColor(1,2,3));
     this.setForeground(Color.BLACK);
     JPanel diaryBoardPanel = (JPanel)getTopLevelAncestor();
 
-    Fileloader fileloader = new Fileloader();
-    String commentsFile = "comments.csv";
 
-    comments = fileloader.loadComments(commentsFile);
+
 
     this.addActionListener(event -> {
 
@@ -44,32 +43,33 @@ public class OpenJournalButton extends FlatButton {
 
       FlatButton deleteButton = new DeleteButton(journal);
 
+      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(journal,
+          publicComments);
+      contentPanel.add(goLeaveACommentButton, BorderLayout.PAGE_END);
       framePanel.add(deleteButton, BorderLayout.PAGE_END);
+
       writingFrame.add(framePanel);
       writingFrame.setVisible(true);
 
     });
   }
 
-  public OpenJournalButton(Journal journal,String onlyForMe) throws IOException {
+  public OpenJournalButton(Journal journal,List<Comment> privateComments,String onlyForMe) throws IOException {
     this.journal = journal;
     this.state = Journal.PUBLISHED;
     this.setText(journal.title());
     this.setBackground(Color.ORANGE);
 
-    Fileloader fileloader = new Fileloader();
-    String commentsFile = "commentsForMyself.csv";
 
-    comments = fileloader.loadComments(commentsFile);
 
     this.addActionListener(event -> {
       openWritingFrame(journal);
     //  FlatButton deleteButton = new DeleteButton(journal,journals);
 
       FlatButton modifyButton = new ModifyButton(writingFrame,
-          titleTextField,writingTextArea,journal, comments);
+          titleTextField,writingTextArea,journal, privateComments);
 
-      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(journal, comments);
+      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(journal, privateComments,"onlyForMe");
 
       contentPanel.add(goLeaveACommentButton, BorderLayout.PAGE_END);
       framePanel.add(modifyButton, BorderLayout.PAGE_END);
@@ -77,6 +77,9 @@ public class OpenJournalButton extends FlatButton {
       writingFrame.add(framePanel);
       writingFrame.setVisible(true);
     });
+
+
+
   }
 
   private void openWritingFrame(Journal journal) {
@@ -109,4 +112,6 @@ public class OpenJournalButton extends FlatButton {
     }
     return null;
   }
+
+
 }
