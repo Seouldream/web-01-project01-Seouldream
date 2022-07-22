@@ -1,5 +1,3 @@
-package utils;
-
 import models.*;
 
 import java.io.*;
@@ -7,6 +5,7 @@ import java.util.*;
 
 public class FileLoader {
   private String[] words;
+
 
   public List<Journal> loadWritings(String fileName) throws FileNotFoundException {
     List<Journal> journals = new ArrayList<>();
@@ -24,11 +23,18 @@ public class FileLoader {
 
   private Journal parseLine(String line) {
     String[] words = line.split(",");
-    String title = words[0];
-    String content = words[1];
-    String state = words[2];
-    return new Journal(title, content);
-  }
+    String accountID = words[0];
+    String password = words[1];
+    String nickName = words[2];
+    String title = words[3];
+    String content = words[4];
+    String state = words[5];
+    for(Account account : MyDiaryLoginMain.accountsList) {
+      if(account.ID().equals(accountID) && account.password().equals(password)
+        && account.nickName().equals(nickName) )
+        return new Journal(account,title, content);
+    }
+  return null;}
 
   public void diaryWriter(List<Journal> journals, String newFileName) throws IOException {
     FileWriter fileWriter = new FileWriter(newFileName);

@@ -1,5 +1,4 @@
 import models.*;
-import utils.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -32,6 +31,11 @@ public class MyDiaryLoginMain {
   }
 
   private void run() throws FileNotFoundException {
+
+
+
+
+
     FileLoader fileloader = new FileLoader();
     String accountsListFile = "accountsList.csv";
     accountsList = fileloader.loadAccounts("accountsList.csv");
@@ -52,15 +56,13 @@ public class MyDiaryLoginMain {
           return;
         }
         for (Account account : accountsList) {
-          if (account.ID().equals(ID) && account.Password().equals(password)) {
+          if (account.ID().equals(ID) && account.password().equals(password)) {
             JOptionPane.showMessageDialog(null, "로그인 성공",
                 "로그인 확인!", JOptionPane.DEFAULT_OPTION);
 
             try {
               JFrame mainFrame = new MainFrame(account);
             } catch (FileNotFoundException ex) {
-              throw new RuntimeException(ex);
-            } catch (IOException ex) {
               throw new RuntimeException(ex);
             }
             loginFrame.setDefaultCloseOperation(loginFrame.DO_NOTHING_ON_CLOSE);
@@ -135,13 +137,16 @@ public class MyDiaryLoginMain {
       String inputPassword = passwordTextField.getText();
       String checkPassword = passwordCheckTextField.getToolTipText();
       String nickName = nickNameTextField.getText();
-      if (inputPassword.equals(checkPassword)) ;
-      {
+      if (inputPassword.equals(checkPassword)){
         Account account = new Account(accountID, inputPassword, nickName);
         accountsList.add(account);
         createAccountDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         createAccountDialog.setVisible(false);
       }
+      JOptionPane.showMessageDialog(null,
+          "             일치하지 않는 비밀번호.",
+          "생성 오류", JOptionPane.DEFAULT_OPTION);
+
     });
 
   }

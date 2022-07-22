@@ -1,6 +1,5 @@
 import models.*;
 import panels.*;
-import utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,7 +84,7 @@ public class MainFrame extends JFrame {
         contentPanel.removeAll();
       }
       try {
-        contentPanel = new DiaryBoardPanel(publicJournals,publicComments);
+        contentPanel = new DiaryBoardPanel(account,publicJournals,publicComments);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -101,7 +100,7 @@ public class MainFrame extends JFrame {
         contentPanel.removeAll();
       }
       try {
-        contentPanel = new PrivateDiaryBoardPanel(privateJournals,privateComments);
+        contentPanel = new PrivateDiaryBoardPanel(account,privateJournals,privateComments);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -123,7 +122,7 @@ public class MainFrame extends JFrame {
       if (journal.switchState().equals(Journal.ON)) {
           if (contentPanel != null) {
             contentPanel.removeAll();
-            contentPanel = new DiaryBoardPanel(publicJournals, publicComments);
+            contentPanel = new DiaryBoardPanel(account,publicJournals, publicComments);
           showContentPanel();
           journal.switchOff();
         }
@@ -136,7 +135,7 @@ public class MainFrame extends JFrame {
       if (journal.switchState().equals(Journal.ON)) {
         if (contentPanel != null) {
           contentPanel.removeAll();
-          contentPanel = new PrivateDiaryBoardPanel(privateJournals, privateComments);
+          contentPanel = new PrivateDiaryBoardPanel(account,privateJournals, privateComments);
           showContentPanel();
           journal.switchOff();
         }
@@ -182,6 +181,7 @@ public class MainFrame extends JFrame {
       @Override
       public void windowActivated(WindowEvent event) {
         try {
+
           fileloader.accountsWriter(accountsList, newFileName);
         } catch (IOException e) {
           throw new RuntimeException(e);

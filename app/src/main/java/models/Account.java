@@ -15,7 +15,7 @@ public class Account {
     return accountID;
   }
 
-  public String Password() {
+  public String password() {
     return password;
   }
 

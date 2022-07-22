@@ -17,14 +17,14 @@ public class SaveButton extends FlatButton {
   private List<Comment> publicComments;
 
 
-  public SaveButton(JFrame writingFrame,JTextField titleTextField,JTextArea writingTextArea,List<Journal> journals) {
+  public SaveButton(Account account,JFrame writingFrame,JTextField titleTextField,JTextArea writingTextArea,List<Journal> journals) {
     this.writingFrame = writingFrame;
     this.setText("저장하기");
 
     this.addActionListener(saveButtonEvent -> {
      String title =  titleTextField.getText();
      String writingContent = writingTextArea.getText();
-     Journal publicJournal = new Journal(title, writingContent);
+     Journal publicJournal = new Journal(account,title, writingContent);
      publicJournal.switchOn();
 
      journals.add(publicJournal);
@@ -33,7 +33,7 @@ public class SaveButton extends FlatButton {
     });
   }
 
-  public SaveButton(JFrame writingFrame,Journal journal,
+  public SaveButton(Account account,JFrame writingFrame,Journal journal,
         JTextField titleTextField,JTextArea writingTextArea,String onlyForMe) {
     this.writingFrame = writingFrame;
     this.setText("수정내용 저장하기");
