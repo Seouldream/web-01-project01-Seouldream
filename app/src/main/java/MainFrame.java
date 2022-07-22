@@ -1,6 +1,6 @@
 import models.*;
 import panels.*;
-
+import java.io.File;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,18 +16,31 @@ public class MainFrame extends JFrame {
   private List<Comment> publicComments;
   private List<Comment> privateComments;
 
-  MainFrame(Account account) throws FileNotFoundException {
+  MainFrame(Account account) throws IOException {
     fileloader = new FileLoader();
+    String myJournalFile = "privateJournals+"+ "" + account.ID() + ".csv";
+    File newFile = new File("/Users/myunghoonkim/myDiary/" +
+        myJournalFile);
+    System.out.print("참" + newFile.exists());
+
+    if(newFile.exists()) {
+      privateJournals = fileloader.loadWritings(myJournalFile);
+    }
+    if(!newFile.exists()) {
+      FileWriter fileWriter = new FileWriter(myJournalFile);
+      privateJournals = fileloader.loadWritings(myJournalFile);
+    }
     String publicJournalFile = "publicJournals.csv";
-    String myJournalFile = "privateJournals.csv";
     publicJournals = fileloader.loadWritings(publicJournalFile);
-    privateJournals = fileloader.loadWritings(myJournalFile);
+
 
     String publicCommentsFile = "publicComments.csv";
     String privateCommentsFile = "privateComments.csv";
     publicComments = fileloader.loadComments(publicCommentsFile);
-    privateComments = fileloader.loadComments(privateCommentsFile);
 
+    System.out.println(publicComments);
+    privateComments = fileloader.loadComments(privateCommentsFile);
+    System.out.println(privateComments);
     this.account = account;
 
     setMainFrameSetting();
@@ -52,7 +65,7 @@ public class MainFrame extends JFrame {
     });
 
     saveDiary(publicJournals, "publicJournals.csv");
-    saveDiary(privateJournals, "privateJournals.csv");
+    saveDiary(privateJournals, myJournalFile);
     saveComments(publicComments, "publicComments.csv");
     saveComments(privateComments, "privateComments.csv");
     saveAccounts(MyDiaryLoginMain.accountsList, "accountsList.csv");

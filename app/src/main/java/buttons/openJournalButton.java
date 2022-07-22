@@ -42,7 +42,7 @@ public class OpenJournalButton extends FlatButton {
 
       FlatButton deleteButton = new DeleteButton(journal);
 
-      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(journal,
+      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(account,journal,
           publicComments);
       contentPanel.add(goLeaveACommentButton, BorderLayout.PAGE_END);
       framePanel.add(deleteButton, BorderLayout.PAGE_END);
@@ -53,7 +53,7 @@ public class OpenJournalButton extends FlatButton {
     });
   }
 
-  public OpenJournalButton(Journal journal,List<Comment> privateComments,String onlyForMe) throws IOException {
+  public OpenJournalButton(Account account,Journal journal,List<Comment> privateComments,String onlyForMe) throws IOException {
     this.journal = journal;
     this.state = Journal.PUBLISHED;
     this.setText(journal.title());
@@ -68,7 +68,7 @@ public class OpenJournalButton extends FlatButton {
       FlatButton modifyButton = new ModifyButton(account,writingFrame,
           titleTextField,writingTextArea,journal, privateComments);
 
-      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(journal, privateComments,"onlyForMe");
+      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(account,journal, privateComments,"onlyForMe");
 
       contentPanel.add(goLeaveACommentButton, BorderLayout.PAGE_END);
       framePanel.add(modifyButton, BorderLayout.PAGE_END);

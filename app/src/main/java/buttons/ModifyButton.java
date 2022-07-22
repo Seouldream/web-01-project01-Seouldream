@@ -45,7 +45,7 @@ public class ModifyButton extends FlatButton {
     framePanel.setLayout(new BorderLayout());
     contentPanel.setLayout(new BorderLayout());
 
-    JButton goLeaveACommentButton = new GoLeaveACommentButton(journal, comments);
+    JButton goLeaveACommentButton = new GoLeaveACommentButton(account,journal, comments);
     JButton saveButton = new SaveButton(account,writingFrame,journal,titleTextField,writingTextArea,"onlyForMe");
 
     framePanel.add(titleTextField, BorderLayout.PAGE_START);

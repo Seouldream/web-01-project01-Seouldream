@@ -64,6 +64,8 @@ public class MyDiaryLoginMain {
               JFrame mainFrame = new MainFrame(account);
             } catch (FileNotFoundException ex) {
               throw new RuntimeException(ex);
+            } catch (IOException ex) {
+              throw new RuntimeException(ex);
             }
             loginFrame.setDefaultCloseOperation(loginFrame.DO_NOTHING_ON_CLOSE);
             loginFrame.setVisible(false);
@@ -135,7 +137,7 @@ public class MyDiaryLoginMain {
     button.addActionListener(event -> {
       String accountID = IDtextField.getText();
       String inputPassword = passwordTextField.getText();
-      String checkPassword = passwordCheckTextField.getToolTipText();
+      String checkPassword = passwordCheckTextField.getText();
       String nickName = nickNameTextField.getText();
       if (inputPassword.equals(checkPassword)){
         Account account = new Account(accountID, inputPassword, nickName);
@@ -143,10 +145,11 @@ public class MyDiaryLoginMain {
         createAccountDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         createAccountDialog.setVisible(false);
       }
-      JOptionPane.showMessageDialog(null,
-          "             일치하지 않는 비밀번호.",
-          "생성 오류", JOptionPane.DEFAULT_OPTION);
-
+      if (!inputPassword.equals(checkPassword)) {
+        JOptionPane.showMessageDialog(null,
+            "             일치하지 않는 비밀번호.",
+            "아이디 생성 오류", JOptionPane.DEFAULT_OPTION);
+      }
     });
 
   }
