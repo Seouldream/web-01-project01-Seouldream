@@ -104,4 +104,5 @@ public class Journal {
     return account.ID()+ "," + account.password() + "," + account.nickName()+
         "," + title + "," + content + "," + state;
   }
+
 }

@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 import java.util.List;
 
 public class MainFrame extends JFrame {
@@ -15,6 +16,8 @@ public class MainFrame extends JFrame {
   private List<Journal> privateJournals;
   private List<Comment> publicComments;
   private List<Comment> privateComments;
+  private List<Message> messages = new ArrayList<>();
+  private String receiver;
 
   MainFrame(Account account) throws IOException {
     fileloader = new FileLoader();
@@ -32,7 +35,6 @@ public class MainFrame extends JFrame {
     }
     String publicJournalFile = "publicJournals.csv";
     publicJournals = fileloader.loadWritings(publicJournalFile);
-
 
     String publicCommentsFile = "publicComments.csv";
     String privateCommentsFile = "privateComments.csv";
@@ -58,6 +60,11 @@ public class MainFrame extends JFrame {
         }
         try {
           refreshPrivateDiaryBoardPanel();
+        } catch (IOException ex) {
+          throw new RuntimeException(ex);
+        }
+        try {
+          refreshMessengerPanel();
         } catch (IOException ex) {
           throw new RuntimeException(ex);
         }
@@ -125,7 +132,12 @@ public class MainFrame extends JFrame {
   private JButton createMessengerPanel() {
     JButton button = new JButton("메신저함");
     button.addActionListener(event -> {
-      JPanel messengerPanel = new MessengerPanel();
+      try {
+        JPanel messengerPanel = new MessengerPanel(account,receiver,messages);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      showContentPanel();
     });
     return button;
   }
@@ -151,6 +163,19 @@ public class MainFrame extends JFrame {
           contentPanel = new PrivateDiaryBoardPanel(account,privateJournals, privateComments);
           showContentPanel();
           journal.switchOff();
+        }
+      }
+    }
+  }
+
+  private void refreshMessengerPanel() throws IOException {
+    for (Message message : messages) {
+      if (message.switchState().equals(Message.ON)) {
+        if (contentPanel != null) {
+          contentPanel.removeAll();
+          contentPanel = new MessengerPanel(account,receiver,messages);
+          showContentPanel();
+          message.switchOff();
         }
       }
     }
